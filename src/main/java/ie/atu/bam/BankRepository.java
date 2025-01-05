@@ -7,12 +7,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public interface BankRepository extends JpaRepository<BankAccount, Long> {
 
     boolean existsByIBAN(int IBAN);
 
-    List<BankAccount> findByuID(Long uID);
+    boolean existsByuID(Long uID);
+
+    List<Object> findByuID(Long uID);
+
+    @Query("select b.balance from BankAccount b where b.Id = ?1")
+    float findBalance(Long uID);
+
+    @Transactional
+    @Modifying
+    @Query("update BankAccount b set b.balance = ?2 where b.uID =?1")
+    int balanceUpdate(Long uID, float newBlnc);
 
 }

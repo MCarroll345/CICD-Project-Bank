@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequestMapping("/bank")
 @RestController
@@ -23,15 +24,23 @@ public class BankController {
     }
 
     @PostMapping("/create/{uID}")
-    public String makeAccount(@PathVariable Long uID){
+    public String makeAccount(@Valid @PathVariable Long uID){
         System.out.println("Response gotten");
         bankService.createA(uID);
         return "Account created";
     }
 
-    @GetMapping
-    public List<BankAccount> loginAcc(Long uID){
+    @GetMapping("/login/{uID}")
+    public List<Object> loginAcc(@Valid @PathVariable Long uID){
         return bankService.loginAcc(uID);
+    }
+
+    @PutMapping("withDep/{uID}/{inout}/{num}")
+    public ResponseEntity<String> withdrawDeposit(@Valid @PathVariable Long uID,@PathVariable String inout, @PathVariable float num){
+        if(num <= 0){
+            return new ResponseEntity<>("Cannot be a negative number", HttpStatus.BAD_REQUEST);
+        }
+        return bankService.withDep(uID, inout, num);
     }
 
 }
