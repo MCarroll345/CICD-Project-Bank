@@ -22,4 +22,11 @@ public class BankAccount {
     private int IBAN;
 
     private Long uID;
+
+    public BankAccount(float iBal, int iIBAN, Long iUID){
+        balance = iBal;
+        IBAN = iIBAN;
+        uID = iUID;
+    }
+
 }
