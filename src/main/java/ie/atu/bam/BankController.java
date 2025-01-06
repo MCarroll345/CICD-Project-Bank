@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @RequestMapping("/bank")
 @RestController
+@CrossOrigin
 public class BankController {
     private final BankService bankService;
 
