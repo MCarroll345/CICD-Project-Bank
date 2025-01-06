@@ -18,15 +18,15 @@ public interface BankRepository extends JpaRepository<BankAccount, Long> {
 
     List<Object> findByuID(Long uID);
 
-    @Query("select b.balance from BankAccount b where b.Id = ?1")
-    float findBalance(Long uID);
+    @Query("select b.balance from BankAccount b where b.IBAN= ?1")
+    float findBalance(int IBAN);
 
     @Query("select b.IBAN from BankAccount b where b.Id = ?1")
     int findIBAN(Long uID);
 
     @Transactional
     @Modifying
-    @Query("update BankAccount b set b.balance = ?2 where b.uID =?1")
-    int balanceUpdate(Long uID, float newBlnc);
+    @Query("update BankAccount b set b.balance = ?2 where b.IBAN =?1")
+    int balanceUpdate(int IBAN, float newBlnc);
 
 }
