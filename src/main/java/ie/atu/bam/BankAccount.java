@@ -17,7 +17,6 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
-
     private float balance;
 
     private int IBAN;

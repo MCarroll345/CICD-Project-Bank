@@ -35,6 +35,16 @@ public class BankController {
         return bankService.loginAcc(uID);
     }
 
+    @GetMapping("/getRecs/{uID}")
+    public List<Object> getRecs(@PathVariable Long uID){
+        return bankService.returnRecs(uID);
+    }
+
+    @PutMapping("/transfer/{IBAN1}/{uID1}/{IBAN2}/{uID2}/{num}")
+    public ResponseEntity<String> transferRec(@PathVariable int IBAN1,@PathVariable Long uID1, @PathVariable int IBAN2,@PathVariable Long uID2,@PathVariable float num){
+        return bankService.transfer(IBAN1, uID1, IBAN2, uID2, num);
+    }
+
     @PutMapping("withDep/{uID}/{inout}/{num}")
     public ResponseEntity<String> withdrawDeposit(@Valid @PathVariable Long uID,@PathVariable String inout, @PathVariable float num){
         if(num <= 0){
@@ -42,5 +52,7 @@ public class BankController {
         }
         return bankService.withDep(uID, inout, num);
     }
+
+
 
 }

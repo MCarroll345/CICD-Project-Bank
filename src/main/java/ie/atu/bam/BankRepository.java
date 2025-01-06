@@ -21,6 +21,9 @@ public interface BankRepository extends JpaRepository<BankAccount, Long> {
     @Query("select b.balance from BankAccount b where b.Id = ?1")
     float findBalance(Long uID);
 
+    @Query("select b.IBAN from BankAccount b where b.Id = ?1")
+    int findIBAN(Long uID);
+
     @Transactional
     @Modifying
     @Query("update BankAccount b set b.balance = ?2 where b.uID =?1")
