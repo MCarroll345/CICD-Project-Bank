@@ -26,14 +26,16 @@ public class BankService {
         float newBlnc1 = 0;
         float newBlnc2 = 0;
         if(bankRepository.findBalance(IBAN1) < num){
+            System.out.println("Insufficient balance");
             return new ResponseEntity<>("Insufficient balance", HttpStatus.BAD_REQUEST);
         }
         else{
-            newBlnc1 = bankRepository.findBalance(IBAN1) - num;
+            newBlnc1 = bankRepository.findBalance(IBAN1) + num;
             bankRepository.balanceUpdate(IBAN1, newBlnc1);
-            newBlnc2 = bankRepository.findBalance(IBAN2) + num;
-            bankRepository.balanceUpdate(IBAN2, newBlnc2);
+            newBlnc2 = bankRepository.findBalance(IBAN1) - num;
+            bankRepository.balanceUpdate(IBAN1, newBlnc2);
             receiptClient.transferRec(IBAN1, IBAN2, num);
+            System.out.println("Transfer successful");
             return new ResponseEntity<>("Transfer successful ", HttpStatus.OK);
         }
     }
@@ -42,6 +44,7 @@ public class BankService {
         BankAccount bankAccount = new BankAccount();
         int randIBAN = ((int)(Math.random() * 9001) + 1000);
         if (bankRepository.existsByuID(uID)){
+            System.out.println("Account already exists");
             return "Account already exists";
         }
 
@@ -50,6 +53,7 @@ public class BankService {
             bankAccount.setUID(uID);
             bankAccount.setIBAN(randIBAN);
             bankRepository.save(bankAccount);
+            System.out.println("Account Created");
             return "Account Created";
         }
 
@@ -65,16 +69,18 @@ public class BankService {
     }
 
     public ResponseEntity<String> withDep(int IBAN, String inout, float num){
-        float newBlnc;
+        float newBlnc = 0;
         switch (inout){
             case "withdraw":
                 if(num > bankRepository.findBalance(IBAN)){
+                    System.out.println("Insufficient balance");
                     return new ResponseEntity<>("Insufficient balance", HttpStatus.BAD_REQUEST);
                 }
                 else{
                     newBlnc = bankRepository.findBalance(IBAN) - num;
                     bankRepository.balanceUpdate(IBAN, newBlnc);
                     receiptClient.createReceipt(IBAN,inout,num);
+                    System.out.println("Withdrawal made successfully");
                     return new ResponseEntity<>("Withdrawal made, new balance: " + newBlnc, HttpStatus.OK);
 
                 }
@@ -83,11 +89,19 @@ public class BankService {
                 newBlnc = bankRepository.findBalance(IBAN) + num;
                 bankRepository.balanceUpdate(IBAN, newBlnc);
                 receiptClient.createReceipt(IBAN,inout,num);
+                System.out.println("Deposit made successfully");
                 return new ResponseEntity<>("Deposit made, new balance: " + newBlnc, HttpStatus.OK);
 
             default:
+                System.out.println("Error");
                 return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public String deleteAcc(Long uID){
+        bankRepository.deleteAcc(uID);
+        System.out.println("Bank account "+uID+" Deleted");
+        return "Bank account deleted";
     }
 
 }
