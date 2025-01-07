@@ -48,11 +48,16 @@ public class BankController {
     @PutMapping("withDep/{IBAN}/{inout}/{num}")
     public ResponseEntity<String> withdrawDeposit(@Valid @PathVariable int IBAN,@PathVariable String inout, @PathVariable float num){
         if(num <= 0){
+            System.out.println("Number given was negative");
             return new ResponseEntity<>("Cannot be a negative number", HttpStatus.BAD_REQUEST);
         }
         return bankService.withDep(IBAN, inout, num);
     }
 
+    @DeleteMapping ("deleteAcc/{uID}")
+    public String deleteAcc(@Valid @PathVariable Long uID){
+        return bankService.deleteAcc(uID);
+    }
 
 
 }
