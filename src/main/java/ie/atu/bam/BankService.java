@@ -29,10 +29,10 @@ public class BankService {
             return new ResponseEntity<>("Insufficient balance", HttpStatus.BAD_REQUEST);
         }
         else{
-            newBlnc1 = bankRepository.findBalance(IBAN1) + num;
+            newBlnc1 = bankRepository.findBalance(IBAN1) - num;
             bankRepository.balanceUpdate(IBAN1, newBlnc1);
-            newBlnc2 = bankRepository.findBalance(IBAN1) - num;
-            bankRepository.balanceUpdate(IBAN1, newBlnc2);
+            newBlnc2 = bankRepository.findBalance(IBAN2) + num;
+            bankRepository.balanceUpdate(IBAN2, newBlnc2);
             receiptClient.transferRec(IBAN1, IBAN2, num);
             return new ResponseEntity<>("Transfer successful ", HttpStatus.OK);
         }
