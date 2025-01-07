@@ -13,8 +13,8 @@ public interface ReceiptClient {
     @PostMapping("/createRec/{IBAN}/{inout}/{num}")
     void createReceipt(@PathVariable int IBAN, @PathVariable String inout, @PathVariable float num);
 
-    @GetMapping("/getRec/{uID}")
-    List<Object> getRecs(@PathVariable Long uID);
+    @GetMapping("/getRec/{IBAN}")
+    List<Object> getRecs(@PathVariable int IBAN);
 
     @PostMapping("/transferRec/{IBAN1}/{IBAN2}/{num}")
     void transferRec(@PathVariable int IBAN1, @PathVariable int IBAN2,@PathVariable float num);

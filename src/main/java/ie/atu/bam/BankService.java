@@ -61,7 +61,8 @@ public class BankService {
     }
 
     public List<Object> returnRecs(Long uID){
-        return receiptClient.getRecs(uID);
+        int IBAN = bankRepository.findIBAN(uID);
+        return receiptClient.getRecs(IBAN);
     }
 
     public List<Object> loginAcc(Long uID){
