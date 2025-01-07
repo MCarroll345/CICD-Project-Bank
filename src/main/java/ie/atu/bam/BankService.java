@@ -64,25 +64,25 @@ public class BankService {
         return bankRepository.findByuID(uID);
     }
 
-    public ResponseEntity<String> withDep(Long uID, String inout, float num){
-        float newBlnc = 0;
+    public ResponseEntity<String> withDep(int IBAN, String inout, float num){
+        float newBlnc;
         switch (inout){
             case "withdraw":
-                if(num > bankRepository.findBalance(bankRepository.findIBAN(uID))){
+                if(num > bankRepository.findBalance(IBAN)){
                     return new ResponseEntity<>("Insufficient balance", HttpStatus.BAD_REQUEST);
                 }
                 else{
-                    newBlnc = bankRepository.findBalance(bankRepository.findIBAN(uID)) - num;
-                    bankRepository.balanceUpdate(bankRepository.findIBAN(uID), newBlnc);
-                    receiptClient.createReceipt(bankRepository.findIBAN(uID),inout,num);
+                    newBlnc = bankRepository.findBalance(IBAN) - num;
+                    bankRepository.balanceUpdate(IBAN, newBlnc);
+                    receiptClient.createReceipt(IBAN,inout,num);
                     return new ResponseEntity<>("Withdrawal made, new balance: " + newBlnc, HttpStatus.OK);
 
                 }
 
             case "deposit":
-                newBlnc = bankRepository.findBalance(bankRepository.findIBAN(uID)) + num;
-                bankRepository.balanceUpdate(bankRepository.findIBAN(uID), newBlnc);
-                receiptClient.createReceipt(bankRepository.findIBAN(uID),inout,num);
+                newBlnc = bankRepository.findBalance(IBAN) + num;
+                bankRepository.balanceUpdate(IBAN, newBlnc);
+                receiptClient.createReceipt(IBAN,inout,num);
                 return new ResponseEntity<>("Deposit made, new balance: " + newBlnc, HttpStatus.OK);
 
             default:

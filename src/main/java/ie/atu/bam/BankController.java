@@ -45,12 +45,12 @@ public class BankController {
         return bankService.transfer(IBAN1, IBAN2, num);
     }
 
-    @PutMapping("withDep/{uID}/{inout}/{num}")
-    public ResponseEntity<String> withdrawDeposit(@Valid @PathVariable Long uID,@PathVariable String inout, @PathVariable float num){
+    @PutMapping("withDep/{IBAN}/{inout}/{num}")
+    public ResponseEntity<String> withdrawDeposit(@Valid @PathVariable int IBAN,@PathVariable String inout, @PathVariable float num){
         if(num <= 0){
             return new ResponseEntity<>("Cannot be a negative number", HttpStatus.BAD_REQUEST);
         }
-        return bankService.withDep(uID, inout, num);
+        return bankService.withDep(IBAN, inout, num);
     }
 
 
